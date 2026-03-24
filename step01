@@ -1,0 +1,41 @@
+● Write(index.html)
+  ⎿  Wrote 109 lines to index.html
+     <!DOCTYPE html>
+     <html lang="ko">
+     <head>
+       <meta charset="UTF-8" />                                                          <meta name="viewport" content="width=device-width, initial-scale=1.0" 
+     />                                                                           
+       <title>TodoApp</title>
+       <link rel="stylesheet" href="style.css" />
+     </head>
+     <body>
+       <!-- Header -->
+
+● Write(style.css)    
+  ⎿  Wrote 464 lines to style.css                                                      /* ===== Reset & Base ===== */
+     *, *::before, *::after {                                                     
+       box-sizing: border-box;                                                           margin: 0;                                                                 
+       padding: 0;                                                                
+     }
+
+     body {
+       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,        
+     sans-serif;
+       background: #f0f2f5;
+     … +454 lines (ctrl+o to expand)
+
+● Write(app.js)           
+  ⎿  Wrote 329 lines to app.js                                                    
+     // ===== Constants =====
+     const STORAGE_KEY = 'todoapp_tasks';
+                                                                                       // ===== State =====
+     let tasks = [];                                                              
+     let currentFilter = 'all';
+     let editingTaskId = null;
+
+     // ===== Utility Functions =====
+     function generateId() {
+     … +319 lines (ctrl+o to expand)
+
+  Read 1 file (ctrl+o to expand)      
+

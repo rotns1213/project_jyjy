@@ -1,0 +1,24 @@
+# 학생 평균 시험 점수 계산 프로그램 (여러 과목)
+
+num_students = int(input("학생 수를 입력하세요: "))
+num_subjects = int(input("과목 수를 입력하세요: "))
+
+all_averages = []
+
+for i in range(num_students):
+    print(f"\n{i+1}번 학생 점수 입력")
+    total = 0
+    
+    for j in range(num_subjects):
+        score = float(input(f"{j+1}번째 과목 점수: "))
+        total += score
+    
+    average = total / num_subjects
+    all_averages.append(average)
+    print(f"{i+1}번 학생 평균: {average:.2f}")
+
+# 전체 평균 계산
+total_class_average = sum(all_averages) / num_students
+
+print("\n===== 전체 결과 =====")
+print(f"학급 전체 평균: {total_class_average:.2f}")

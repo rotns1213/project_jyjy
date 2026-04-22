@@ -1,0 +1,22 @@
+import os
+import shutil
+
+def organize_files(directory):
+    # 해당 디렉토리의 파일 목록 읽기
+    for filename in os.listdir(directory):
+        if os.path.isfile(os.path.join(directory, filename)):
+            # 확장자 추출
+            extension = filename.split('.')[-1].lower()
+            target_folder = os.path.join(directory, extension)
+
+            # 폴더가 없으면 생성
+            if not os.path.exists(target_folder):
+                os.makedirs(target_folder)
+
+            # 파일 이동
+            shutil.move(os.path.join(directory, filename), 
+                        os.path.join(target_folder, filename))
+    print("파일 정리가 완료되었습니다.")
+
+# 정리하고 싶은 폴더 경로 입력
+# organize_files('./test_folder')

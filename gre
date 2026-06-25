@@ -1,0 +1,28 @@
+name: Auto Green Grass
+
+on:
+  schedule:
+    # 매일 자정(UTC 기준, 한국 시간으로 오전 9시)에 자동으로 실행됩니다.
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 필요할 때 언제든 수동으로도 실행할 수 있게 하는 버튼을 만듭니다.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Make a change
+      run: |
+        # grass.txt 파일에 현재 시간을 기록하여 파일에 변화를 줍니다.
+        echo "$(date)" >> grass.txt
+
+    - name: Commit and Push
+      run: |
+        # 본인의 깃허브 이름과 이메일로 수정해주세요.
+        git config --global user.name "본인의 깃허브 닉네임"
+        git config --global user.email "본인의 깃허브 이메일"
+        git add grass.txt
+        git commit -m "🌿 매일매일 잔디 심기"
+        git push

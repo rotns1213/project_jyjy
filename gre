@@ -1,28 +1,50 @@
-name: Auto Green Grass
+name: Ghost Green Grass (Backdate Commit)
 
 on:
-  schedule:
-    # 매일 자정(UTC 기준, 한국 시간으로 오전 9시)에 자동으로 실행됩니다.
-    - cron: '0 0 * * *'
-  workflow_dispatch: # 필요할 때 언제든 수동으로도 실행할 수 있게 하는 버튼을 만듭니다.
+  workflow_dispatch:
+    inputs:
+      start_date:
+        description: '시작 날짜 (YYYY-MM-DD)'
+        required: true
+        default: '2026-05-018'
+      end_date:
+        description: '종료 날짜 (YYYY-MM-DD)'
+        required: true
+        default: '2026-06-17'
 
 jobs:
-  build:
+  backdate-commit:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Make a change
+    - name: Run Backdate Commits
       run: |
-        # grass.txt 파일에 현재 시간을 기록하여 파일에 변화를 줍니다.
-        echo "$(date)" >> grass.txt
+        git config --global user.name "rotns1213"
+        git config --global user.email "psdx1234@naver.com"
 
-    - name: Commit and Push
-      run: |
-        # 본인의 깃허브 이름과 이메일로 수정해주세요.
-        git config --global user.name "본인의 깃허브 닉네임"
-        git config --global user.email "본인의 깃허브 이메일"
-        git add grass.txt
-        git commit -m "🌿 매일매일 잔디 심기"
-        git push
+        # 입력받은 날짜 설정
+        START_DATE="${{ github.event.inputs.start_date }}"
+        END_DATE="${{ github.event.inputs.end_date }}"
+
+        current_date="$START_DATE"
+        
+        # 시작 날짜부터 종료 날짜까지 하루씩 증가하며 커밋 생성
+        while [ "$current_date" != "$(date -I -d "$END_DATE + 2 day")" ]; do
+          echo "잔디 심는 중: $current_date"
+          
+          # 파일 수정
+          echo "Grass planted on $current_date" >> grass.txt
+          git add grass.txt
+          
+          # 해당 날짜로 강제 커밋 설정 (오전 11시 기준)
+          COMMIT_DATE="${current_date}T11:00:00"
+          GIT_AUTHOR_DATE="$COMMIT_DATE" GIT_COMMITTER_DATE="$COMMIT_DATE" git commit -m "🌿 $current_date 잔디 심기 완료"
+          
+          # 하루 추가
+          current_date=$(date -I -d "$current_date + 1 day")
+        done
+
+        # 깃허브에 한 번에 푸시
+        git push origin main
